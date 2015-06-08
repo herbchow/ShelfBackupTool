@@ -1,0 +1,34 @@
+﻿<Window x:Class="XQShelfLauncherUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="388.889" Width="587.222"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel HorizontalAlignment="Left" Width="579" Margin="0,-20,0,20">
+            <Label x:Name="LabelExePath" Content="Exe Path..." />
+            <Button Content="Browse for Exe..." Click="BrowseExe_OnClick" Margin="0,0,490,0" Height="46" />
+            <Label x:Name="LabelContentPath" Content="Content Path..." Margin="0,0,-132,0" />
+            <Button Content="Browse Content Folder..." VerticalAlignment="Top" Click="ButtonBrowseSettings_Click"
+                    Margin="0,0,447,0" HorizontalAlignment="Right" />
+            <Border BorderBrush="Black" BorderThickness="3" Height="auto" Padding="20">
+                <StackPanel>
+                    <TextBox x:Name="SaveContentName"></TextBox>
+                    <Button Content="Save Content" Click="SaveContent_OnClick" />
+                </StackPanel>
+
+            </Border>
+
+            <Border BorderBrush="Black" BorderThickness="3" Height="auto" Padding="20">
+                <StackPanel>
+                    <ListBox x:Name="SelectionListBox" Background="{x:Null}" Height="97" SelectionChanged="SelectionListBox_SelectionChanged">
+                    </ListBox>
+                    <Button x:Name="LoadButton" Content="Load Content" Click="LoadContent_OnClick" IsEnabled="False" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>
