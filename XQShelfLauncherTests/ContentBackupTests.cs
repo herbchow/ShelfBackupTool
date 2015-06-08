@@ -33,12 +33,5 @@ namespace XQShelfLauncherTests
         {
             _sut.Invoking(s => s.FindBackupsInPath()).ShouldThrow<InvalidOperationException>();
         }
-
-        [Test]
-        public void should_fail_when_path_bogus()
-        {
-            _sut.ShelfDataPath = "Bogus";
-            _sut.Save("abcd");
-        }
     }
 }

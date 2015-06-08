@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -17,6 +18,7 @@ namespace XQShelfLauncherUI
     {
         private readonly ContentBackup _contentBackup;
         private string _selectedBackup;
+        private readonly UserSettings _userSettings;
         public ObservableCollection<string> FoundBackups { get; set; }
 
         public MainWindow()
@@ -25,6 +27,27 @@ namespace XQShelfLauncherUI
             _contentBackup = new ContentBackup();
             FoundBackups = new ObservableCollection<string>();
             SelectionListBox.ItemsSource = FoundBackups;
+            _userSettings = new UserSettings();
+            _userSettings.Load();
+            ApplyPreviousSettings(_userSettings.Data);
+        }
+
+        private void ApplyPreviousSettings(UserSettings.SettingsData data)
+        {
+            if (data != null)
+            {
+                // We have data from settings file
+                if (File.Exists(data.ExePath))
+                {
+                    LabelExePath.Content = data.ExePath;
+                }
+                if (
+                    Directory.Exists(data.ContentPath))
+                {
+                    LabelContentPath.Content = data.ContentPath;
+                    RefreshBackupsInPath();
+                }
+            }
         }
 
         private void BrowseExe_OnClick(object sender, RoutedEventArgs e)
@@ -67,6 +90,15 @@ namespace XQShelfLauncherUI
                 Debug.WriteLine(string.Format("selected folder name: " + folderBrowser.SelectedPath));
                 LabelContentPath.Content = folderBrowser.SelectedPath;
                 PopulateBackupsInPath(folderBrowser.SelectedPath);
+            }
+        }
+
+        private void RefreshBackupsInPath()
+        {
+            var contentPath = (string) LabelContentPath.Content;
+            if (!string.IsNullOrEmpty(contentPath))
+            {
+                PopulateBackupsInPath(contentPath);
             }
         }
 
@@ -114,6 +146,7 @@ namespace XQShelfLauncherUI
             else
             {
                 var savedFolder = _contentBackup.Save(SaveContentName.Text);
+                RefreshBackupsInPath();
                 ShowOkMessage("Created backup: " + savedFolder, "Saved");
             }
         }
@@ -125,6 +158,12 @@ namespace XQShelfLauncherUI
                 LoadButton.IsEnabled = true;
                 _selectedBackup = (string) e.AddedItems[0];
             }
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            // Store settings data?
+            _userSettings.Save((string) LabelExePath.Content, (string) LabelContentPath.Content);
         }
     }
 }
