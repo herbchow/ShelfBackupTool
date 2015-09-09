@@ -9,7 +9,6 @@ namespace XQShelfLauncher
 
         public class SettingsData
         {
-            public string ExePath { get; set; }
             public string ContentPath { get; set; }
         }
 
@@ -32,9 +31,9 @@ namespace XQShelfLauncher
             }
         }
 
-        public void Save(string exePath, string contentPath)
+        public void Save(string contentPath)
         {
-            var text = JsonConvert.SerializeObject(new SettingsData {ExePath = exePath, ContentPath = contentPath});
+            var text = JsonConvert.SerializeObject(new SettingsData {ContentPath = contentPath});
             File.WriteAllText(settingsFile, text);
         }
     }

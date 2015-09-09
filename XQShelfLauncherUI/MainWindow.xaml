@@ -6,12 +6,6 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}" Closing="Window_Closing">
     <Grid>
         <StackPanel>
-            <GroupBox Header="Shelf Exe">
-                <StackPanel>
-                    <Label x:Name="LabelExePath" Content="Exe Path..." />
-                    <Button Content="Browse for Exe..." Click="BrowseExe_OnClick" />
-                </StackPanel>
-            </GroupBox>
             <GroupBox Header="Content Folder">
                 <StackPanel>
                     <Label x:Name="LabelContentPath" Content="Content Path..." />

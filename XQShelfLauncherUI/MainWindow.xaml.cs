@@ -36,49 +36,12 @@ namespace XQShelfLauncherUI
         {
             if (data != null)
             {
-                // We have data from settings file
-                if (File.Exists(data.ExePath))
-                {
-                    LabelExePath.Content = data.ExePath;
-                }
                 if (
                     Directory.Exists(data.ContentPath))
                 {
                     LabelContentPath.Content = data.ContentPath;
                     RefreshBackupsInPath();
                 }
-            }
-        }
-
-        private void BrowseExe_OnClick(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-            {
-                Debug.WriteLine(string.Format(openFileDialog.FileName));
-                if (!string.IsNullOrEmpty(openFileDialog.FileName))
-                {
-                    var pathDirectory = Path.GetDirectoryName(openFileDialog.FileName);
-                    var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
-                    Debug.WriteLine(string.Format("PathRoot: {0} NameWOExtension: {1} Full: {2}",
-                                                  pathDirectory,
-                                                  fileNameWithoutExtension,
-                                                  openFileDialog.FileName));
-                    LabelExePath.Content = openFileDialog.FileName;
-                }
-            }
-        }
-
-        public string ExePath
-        {
-            get
-            {
-                var textBoxContent = LabelExePath.Content as string;
-                if (string.IsNullOrEmpty(textBoxContent))
-                {
-                    return null;
-                }
-                return textBoxContent;
             }
         }
 
@@ -122,11 +85,6 @@ namespace XQShelfLauncherUI
             else
             {
                 var loadedFolder = _contentBackup.Restore(_selectedBackup);
-                if (ExePath != null)
-                {
-                    var processStarter = new ProcessStarter();
-                    processStarter.Start(ExePath);
-                }
                 ShowOkMessage("Loaded: " + loadedFolder, "Loaded");
             }
         }
@@ -163,7 +121,7 @@ namespace XQShelfLauncherUI
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             // Store settings data?
-            _userSettings.Save((string) LabelExePath.Content, (string) LabelContentPath.Content);
+            _userSettings.Save((string) LabelContentPath.Content);
         }
     }
 }
