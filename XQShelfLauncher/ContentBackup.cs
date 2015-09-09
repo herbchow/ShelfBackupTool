@@ -6,19 +6,18 @@ namespace XQShelfLauncher
 {
     public class ContentBackup
     {
-        const string ShelfbackupPrefix = "_shelfbackup_";
+        private const string ShelfbackupPrefix = "_shelfbackup_";
         public string ShelfDataPath { get; set; }
 
         private readonly string[] _foldersToCopy = new[]
             {
-                "Config", "ContentDatabase", "Database", "Assets//Virtual Shelf"
+                "AdPlay", "Assets", "Config", "ContentDatabase", "Database", "StartScreenConfig", "Themes"
             };
 
         public string Save(string backupNameNoPrefix)
         {
-            if(string.IsNullOrEmpty(ShelfDataPath))
+            if (string.IsNullOrEmpty(ShelfDataPath))
                 throw new InvalidOperationException("Must set ShelfDataPath");
-
             var nameWithPrefix = AddPrefix(backupNameNoPrefix);
             foreach (var currentFolder in _foldersToCopy)
             {
@@ -41,13 +40,11 @@ namespace XQShelfLauncher
         {
             if (string.IsNullOrEmpty(ShelfDataPath))
                 throw new InvalidOperationException("Must set ShelfDataPath");
-
-            string nameWithPrefix = backupName;
+            var nameWithPrefix = backupName;
             if (!backupName.StartsWith(ShelfbackupPrefix))
             {
-                nameWithPrefix = AddPrefix(backupName);   
+                nameWithPrefix = AddPrefix(backupName);
             }
-            
             foreach (var currentFolder in _foldersToCopy)
             {
                 var destPath = Path.Combine(ShelfDataPath, currentFolder);
@@ -64,13 +61,11 @@ namespace XQShelfLauncher
         {
             if (string.IsNullOrEmpty(ShelfDataPath))
                 throw new InvalidOperationException("Must set ShelfDataPath");
-
             var allSubdirs = Directory.GetDirectories(ShelfDataPath);
             var backups = new List<string>();
             foreach (var subdir in allSubdirs)
             {
                 var lastDir = Path.GetFileName(subdir);
-
                 if (lastDir.StartsWith(ShelfbackupPrefix))
                 {
                     backups.Add(lastDir);

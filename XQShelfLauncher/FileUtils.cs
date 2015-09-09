@@ -8,13 +8,13 @@ namespace XQShelfLauncher
         {
             // Get the subdirectories for the specified directory.
             var dir = new DirectoryInfo(sourceDirName);
-            var dirs = dir.GetDirectories();
             if (!dir.Exists)
             {
-                throw new DirectoryNotFoundException(
-                    "Source directory does not exist or could not be found: "
-                    + sourceDirName);
+                return;
             }
+
+            var dirs = dir.GetDirectories();
+            
             // If the destination directory doesn't exist, create it. 
             if (!Directory.Exists(destDirName))
             {
